@@ -1,0 +1,66 @@
+[project]
+name = "ap-autopilot"
+version = "0.1.0"
+description = "The runnable AP autopilot built across Production Agents From Scratch."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Johnny Devriese" }]
+requires-python = ">=3.12"
+dependencies = [
+    # Chapter 1 — a single provider call.
+    "anthropic>=0.40",
+    # Chapter 2 onward — the canonical domain models.
+    "pydantic>=2.7",
+    # Chapter 4 — the first OpenTelemetry spans (console exporter; Opik in Part VI).
+    "opentelemetry-sdk>=1.43.0",
+    # Chapter 6 — the framework we adopt from here on (the "frozen stack").
+    "pydantic-ai-slim[anthropic]>=2.0.0",
+    # Chapter 7 — the analyst agent's dataframes (in the sandbox and the seed export).
+    "polars>=1.42.0",
+    # Chapter 20 — structural evals over the span tree (evaluators + span_tree query).
+    "pydantic-evals>=1.0",
+    # Chapter 21 — Wilson intervals and McNemar's test.
+    "statsmodels>=0.14",
+    # Chapter 22 — Cohen's kappa (quadratic-weighted) for judge calibration.
+    "scikit-learn>=1.5",
+    # Chapter 26 — declarative retry (transient-only) on the payments rail.
+    "tenacity>=9.1.4",
+    # Later chapters add: opik, temporalio, and the ML stack
+    # (peft/transformers/torch) — introduced where the book does.
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.6",
+    "basedpyright>=1.18",
+    "pytest>=8",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+# Chapter 20's two lanes. The smoke lane (LLM only — offline here via FunctionModel)
+# gates every PR; the full-stack lane (real DB + services) arrives with the
+# persistence/durable checkpoints (Ch 25/26) and runs nightly.
+markers = [
+    "span_eval: an eval that asserts over the captured span tree",
+    "eval_smoke: fast lane — LLM only, no DB; gates every PR",
+    "full_stack_eval: slow lane — real DB + services; nightly / pre-release",
+]
+
+[tool.basedpyright]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+# statsmodels (and later torch/transformers) ship no/partial stubs that leak
+# `Unknown` from their own symbols. Disable the third-party-Unknown family so the
+# scientific stack doesn't poison strict mode; our own code stays fully typed
+# (reportMissingParameterType / reportReturnType / reportArgumentType stay on),
+# and we convert untyped returns to concrete types at the boundary (float(...)).
+reportMissingTypeStubs = false
+reportUnknownVariableType = false
+reportUnknownMemberType = false
+reportUnknownArgumentType = false

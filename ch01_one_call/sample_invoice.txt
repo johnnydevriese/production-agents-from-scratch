@@ -1,0 +1,17 @@
+ACME INDUSTRIAL SUPPLY CO.
+Invoice #1043
+Invoice date: 2026-06-12
+Bill to: Northwind Robotics — Accounts Payable
+Purchase order: PO-2026-0517
+
+Description                              Qty      Unit          Amount
+M8 hex bolts, case of 500                  4      $42.00        $168.00
+Pneumatic actuator, Model PA-200           2   $1,250.00      $2,500.00
+Freight                                                          $86.00
+                                                Subtotal      $2,754.00
+                                                Tax (8.5%)      $234.09
+                                                TOTAL         $2,988.09
+
+Terms: Net 30. Payment due 2026-07-12.
+Remit to: Acme Industrial Supply Co., Account 4471-228, Routing 021000021.
+Questions? ap@acme-industrial.example

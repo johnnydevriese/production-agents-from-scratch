@@ -1,0 +1,16 @@
+ACME INDUSTRIAL SUPPLY CO.
+1428 Foundry Road, Cleveland, OH 44114
+
+INVOICE #1043
+Bill to: Northwind Robotics
+
+PO: PO-2026-0517
+Invoice date: 2026-06-12
+Terms: Net 30. Payment due 2026-07-12.
+
+Line items
+  Hex bolts, M8 x 30mm (500 ct)        $   840.00
+  Pneumatic actuator (qty 2)           $ 1,900.00
+  Freight                              $   248.09
+
+Total due: $2,988.09 USD

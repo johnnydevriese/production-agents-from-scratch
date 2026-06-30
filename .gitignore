@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environment
+.venv/
+venv/
+
+# NOTE: .python-version is intentionally committed — it pins the interpreter for uv.
+
+# Test / lint / type-check caches
+.pytest_cache/
+.ruff_cache/
+.basedpyright/
+.coverage
+htmlcov/
+
+# Local runtime artifacts (some chapter checkpoints write these when run for real)
+*.log
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Secrets & certificates — never commit a real key
+.env
+.env.*
+*.pem
+
+# ML / experiment outputs (the LoRA and small-model chapters)
+mlruns/
+mlflow.db
+outputs/
+*.bin
+
+# Editor / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store

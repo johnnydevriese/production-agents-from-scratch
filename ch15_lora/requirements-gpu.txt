@@ -1,0 +1,8 @@
+# Optional GPU-only stack for the Chapter 15 LoRA training walkthrough.
+# The main reference app stays CPU/offline-testable; install this only when
+# you intentionally run the adapter-training section.
+peft==0.14.0
+transformers==4.48.1
+trl==0.13.0
+torch==2.5.1
+datasets==3.2.0
