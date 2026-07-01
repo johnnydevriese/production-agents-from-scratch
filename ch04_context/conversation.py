@@ -28,19 +28,22 @@ from typing import Any, cast
 import anthropic
 from anthropic.types import (
     ContentBlock,
+    Message,
     MessageParam,
     TextBlockParam,
     ToolParam,
     ToolResultBlockParam,
     ToolUseBlock,
 )
+from opentelemetry import trace
 from pydantic import BaseModel
 
 from .tools_impl import DISPATCH
+from .tracing import run_chat_span
 
 logger = logging.getLogger(__name__)
 
-MODEL = "claude-sonnet-4-6"  # representative; real IDs live in Appendix A
+MODEL = "claude-sonnet-5"  # representative; real IDs live in Appendix A
 
 SYSTEM_PROMPT = (
     "You are an accounts-payable assistant. You have tools to look up invoices, "
@@ -61,24 +64,34 @@ def run_turn(
     client: anthropic.Anthropic,
     tools: list[ToolParam],
     dispatch: Mapping[str, Callable[..., BaseModel]] = DISPATCH,
+    tracer: trace.Tracer | None = None,
 ) -> list[MessageParam]:
     """Append one user turn, run the loop to completion, return the new history.
 
     `history` is the agent's entire working memory. We never mutate the caller's
-    list in place — we build and return a new one (immutability by default).
+    list in place — we build and return a new one (immutability by default). Pass a
+    `tracer` to wrap each model call in a `gen_ai.chat` span (Chapter 4's first span
+    tree); leave it `None` and the loop runs untraced.
     """
     messages: list[MessageParam] = [
         *history,
         {"role": "user", "content": user_text},
     ]
 
-    while True:
-        response = client.messages.create(
+    def call_model() -> Message:
+        return client.messages.create(
             model=MODEL,
             max_tokens=1024,
             system=SYSTEM_PROMPT,
             tools=tools,
             messages=messages,
+        )
+
+    while True:
+        response = (
+            call_model()
+            if tracer is None
+            else run_chat_span(tracer, call_model, model=MODEL)
         )
         # Append the FULL content (text + tool_use blocks), not just the text.
         # Drop the tool_use blocks here and turn 2 forgets which PO matched.

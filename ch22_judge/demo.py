@@ -45,7 +45,7 @@ def main() -> None:
     # A different model family than the agent under test would be ideal here
     # (self-enhancement bias); the reference app is Anthropic-only, so production
     # should swap this for the cheaper/different judge the economics section names.
-    judge = build_reason_judge("anthropic:claude-sonnet-4-6")
+    judge = build_reason_judge("anthropic:claude-sonnet-5")
     for invoice_id, approval in _CASES.items():
         match = MatchResult(
             invoice_id=invoice_id,

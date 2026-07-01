@@ -18,6 +18,7 @@ from collections.abc import Callable, Generator, Mapping
 from contextlib import contextmanager
 from functools import partial
 
+from anthropic.types import Message
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor, SpanExporter
@@ -45,6 +46,29 @@ def agent_turn(tracer: trace.Tracer, *, turn: int) -> Generator[trace.Span]:
     with tracer.start_as_current_span("agent.turn") as span:
         span.set_attribute("agent.turn", turn)
         yield span
+
+
+def run_chat_span(
+    tracer: trace.Tracer, create: Callable[[], Message], *, model: str
+) -> Message:
+    """Run one model call inside a `gen_ai.chat` span — the model-call sibling of
+    `run_tool_span`.
+
+    Uses the OpenTelemetry `gen_ai.*` semantic conventions, so the request model and
+    token usage land on the trace beside the tool spans and Figure 4-2's tree is
+    complete. `create` is the zero-argument model call, wrapped so the span brackets
+    exactly the provider round-trip.
+    """
+    with tracer.start_as_current_span(
+        "gen_ai.chat", kind=trace.SpanKind.CLIENT
+    ) as span:
+        span.set_attribute("gen_ai.provider.name", "anthropic")  # not gen_ai.system
+        span.set_attribute("gen_ai.request.model", model)
+        span.set_attribute("gen_ai.operation.name", "chat")
+        response = create()
+        span.set_attribute("gen_ai.usage.input_tokens", response.usage.input_tokens)
+        span.set_attribute("gen_ai.usage.output_tokens", response.usage.output_tokens)
+        return response
 
 
 def run_tool_span(

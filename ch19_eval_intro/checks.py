@@ -41,14 +41,18 @@ def answer_cites_invoice(
 
 
 def payment_matches_lookup(run: AgentRun) -> CheckResult:
-    """Path assertion: the vendor paid must equal the vendor the lookup returned.
+    """Path assertion: the vendor the payment resolved to must equal the vendor the
+    lookup returned.
 
-    Reads nothing from the answer. On #4471, lookup returned V-ACME and the payment
-    went to V-ACMI, so this fails on exactly the run the answer check waved through.
+    Reads nothing from the answer. ``schedule_payment`` takes only an invoice id, so
+    the account the money reaches is decided by the ``get_vendor`` call that resolves
+    it — that argument is what we check. On #4471 lookup returned V-ACME but
+    ``get_vendor`` was called with V-ACMI, so this fails on exactly the run the answer
+    check waved through.
     """
     looked_up = _first_call(run, "lookup_invoice").returned["vendor_id"]
-    paid = _first_call(run, "schedule_payment").args["vendor_id"]
+    paid = _first_call(run, "get_vendor").args["vendor_id"]
     return CheckResult(
         passed=looked_up == paid,
-        detail=f"lookup returned {looked_up}, payment went to {paid}",
+        detail=f"lookup returned {looked_up}, payment resolved to {paid}",
     )

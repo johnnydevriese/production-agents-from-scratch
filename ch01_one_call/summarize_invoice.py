@@ -18,7 +18,7 @@ import anthropic
 from anthropic.types import TextBlock
 
 # A specific model ID dates badly — treat this as representative (see Appendix A).
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 SYSTEM_PROMPT = (
     "You are an accounts-payable assistant. Given the raw text of a vendor "

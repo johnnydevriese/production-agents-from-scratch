@@ -35,7 +35,7 @@ def _msg(
     return Message(
         id="msg_test",
         content=list(blocks),
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5",
         role="assistant",
         stop_reason=stop_reason,  # pyright: ignore[reportArgumentType]
         stop_sequence=None,
@@ -170,8 +170,8 @@ def test_chat_span_carries_the_gen_ai_conventions() -> None:
     run_autopilot("INV-1043", client=client, tracer=tracer)
 
     attrs = _attrs(_by_name(exporter.get_finished_spans())["chat"])
-    assert attrs["gen_ai.system"] == "anthropic"
-    assert attrs["gen_ai.request.model"] == "claude-sonnet-4-6"
+    assert attrs["gen_ai.provider.name"] == "anthropic"
+    assert attrs["gen_ai.request.model"] == "claude-sonnet-5"
     assert attrs["gen_ai.operation.name"] == "chat"
     assert attrs["gen_ai.usage.input_tokens"] == 10
     assert attrs["gen_ai.usage.output_tokens"] == 5

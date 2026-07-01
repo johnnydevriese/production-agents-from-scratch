@@ -155,7 +155,7 @@ def _teacher_emitting(coding: GLCoding) -> FunctionModel:
 
 def test_the_frontier_teacher_returns_a_coding_offline() -> None:
     agent: Agent[None, GLCoding] = Agent(
-        "anthropic:claude-sonnet-4-6", output_type=GLCoding, system_prompt=GL_SYSTEM
+        "anthropic:claude-sonnet-5", output_type=GLCoding, system_prompt=GL_SYSTEM
     )
     teacher = FrontierGLCoder(agent=agent)
     scripted = _coding(GLAccount.SOFTWARE_SAAS, confidence=0.97)

@@ -124,7 +124,7 @@ class FrontierGLCoder:
 
 
 def build_frontier_gl_coder(
-    model: str = "anthropic:claude-sonnet-4-6",
+    model: str = "anthropic:claude-sonnet-5",
 ) -> FrontierGLCoder:
     """Construct the teacher: a PydanticAI agent with structured output (Ch 9, 11)."""
     return FrontierGLCoder(

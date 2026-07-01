@@ -27,7 +27,7 @@ The arc is wired through earlier checkpoints, not re-implemented: the label spac
 test from `ch21_stats`.
 
 ```bash
-# from reference-app/
+# from the repo root
 uv run pytest ch15_lora/ -q
 ```
 
@@ -49,6 +49,7 @@ the training stack, update that file in the same commit as the experiment notes.
 
 ```python
 # the real train step — runs on one modest GPU, minutes-to-an-hour
+import datasets
 from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
@@ -57,6 +58,7 @@ from ch15_lora.train import LoraSettings, build_training_corpus
 
 settings = LoraSettings(base_model="<a small open instruct model, 1-8B>")
 rows = [ex.model_dump() for ex in build_training_corpus(train_examples)]
+dataset = datasets.Dataset.from_list(rows)  # SFTTrainer needs a Dataset, not a list
 
 base = AutoModelForCausalLM.from_pretrained(settings.base_model)
 tokenizer = AutoTokenizer.from_pretrained(settings.base_model)
@@ -70,7 +72,7 @@ trainer = SFTTrainer(
     model=base,
     args=SFTConfig(seed=settings.seed, output_dir="adapter/"),
     peft_config=lora,        # trains ONLY the adapter; the base stays frozen
-    train_dataset=rows,
+    train_dataset=dataset,
 )
 trainer.train()              # → a few-MB adapter, not a fork of the base model
 ```

@@ -50,7 +50,7 @@ from .tools_impl import DISPATCH
 
 logger = logging.getLogger(__name__)
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 SYSTEM_PROMPT = (
     "You are an accounts-payable autopilot. For the given invoice: match it to its "
@@ -134,7 +134,7 @@ def _chat(
 ) -> Message:
     """One model call, inside a CLIENT span tagged with the gen_ai.* conventions."""
     with tracer.start_as_current_span("chat", kind=trace.SpanKind.CLIENT) as span:
-        span.set_attribute("gen_ai.system", "anthropic")
+        span.set_attribute("gen_ai.provider.name", "anthropic")  # not gen_ai.system
         span.set_attribute("gen_ai.request.model", MODEL)
         span.set_attribute("gen_ai.operation.name", "chat")
         response = client.messages.create(

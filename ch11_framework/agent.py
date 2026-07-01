@@ -57,7 +57,7 @@ class Deps:
 
 
 autopilot = Agent(
-    "anthropic:claude-sonnet-4-6",  # string selects the provider; swappable (App. A)
+    "anthropic:claude-sonnet-5",  # string selects the provider; swappable (App. A)
     deps_type=Deps,
     system_prompt=AP_SYSTEM_PROMPT,  # the prompt-as-code from Chapter 8
 )

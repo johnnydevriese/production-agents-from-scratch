@@ -15,7 +15,7 @@ from .release import AgentRelease, diff_releases, gated_tool, tool_surface_hash
 
 _BASE = AgentRelease(
     prompt_text="You are an accounts-payable autopilot.",
-    model_id="anthropic:claude-sonnet-4-6",
+    model_id="anthropic:claude-sonnet-5",
     tool_schema_hash=tool_surface_hash(),
     eval_suite_sha="abc123",
 )
@@ -50,7 +50,7 @@ def test_diff_releases_names_exactly_what_changed() -> None:
     new = _release(model_id="openai:gpt-5", kill_switch=True)
     diff = diff_releases(old, new)
     assert set(diff) == {"model_id", "kill_switch"}
-    assert diff["model_id"] == ("anthropic:claude-sonnet-4-6", "openai:gpt-5")
+    assert diff["model_id"] == ("anthropic:claude-sonnet-5", "openai:gpt-5")
 
 
 def test_the_kill_switch_downgrades_money_movement_to_approval() -> None:

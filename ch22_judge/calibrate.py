@@ -2,8 +2,9 @@
 
 A judge's score means nothing until you've shown it agrees with the humans whose
 judgment it stands in for. Raw agreement is a trap: if 80% of reasons are "good,"
-two raters who both just guess "good" agree 64% of the time having learned
-nothing. Cohen's kappa corrects for exactly that chance agreement.
+two raters guessing in that same 80/20 split agree 68% of the time
+(0.8² + 0.2²) having learned nothing. Cohen's kappa corrects for exactly that
+chance agreement.
 
 The workflow: two humans grade a 50–100 sample against the *same* rubric (two, so
 you also get a human–human kappa — your ceiling), run the judge on the same

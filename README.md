@@ -56,7 +56,7 @@ see `RUNNABLE_PLAN.md` or Appendix E of the book.
 ## Layout
 
 ```
-reference-app/
+production-agents-from-scratch/      ← this repo (the book calls it "the reference-app")
 ├── autopilot/                ← the frozen canon (Tier 0): types + data, no behavior
 │   ├── models.py             ← Invoice, Vendor, Payment, JournalEntry, … + NewType IDs
 │   ├── tools.py              ← the seven-tool Protocol, RiskTier, TOOL_RISK

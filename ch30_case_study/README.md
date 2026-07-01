@@ -22,7 +22,7 @@ built: routing (Ch 13–14), tool scoping (Ch 12), the idempotency contract (Ch 
 loop is a way to *aim* the toolbox at the bug the toolbox predicted.
 
 ```bash
-# from reference-app/
+# from the repo root
 uv run pytest ch30_case_study/ -q
 ```
 

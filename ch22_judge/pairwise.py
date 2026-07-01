@@ -37,7 +37,9 @@ invoice is worse than a crisp one-liner that names the issue. Choose 'first' or
 'second'; explain why before you choose."""
 
 
-def build_pairwise_judge(model: Model | KnownModelName) -> Agent[None, PairVerdict]:
+def build_pairwise_judge(
+    model: Model | KnownModelName | str,
+) -> Agent[None, PairVerdict]:
     return Agent(model, output_type=PairVerdict, system_prompt=PAIRWISE_SYSTEM)
 
 

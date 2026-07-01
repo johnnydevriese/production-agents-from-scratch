@@ -78,7 +78,7 @@ class LLMRouter:
         return self._agent.run_sync(request).output
 
 
-def build_llm_router(model: str = "anthropic:claude-sonnet-4-6") -> LLMRouter:
+def build_llm_router(model: str = "anthropic:claude-sonnet-5") -> LLMRouter:
     """Construct the shipped LLM router. The carve-out that fixes the production
     misroute lives in the system prompt — prompt-as-code (Chapter 8)."""
     return LLMRouter(

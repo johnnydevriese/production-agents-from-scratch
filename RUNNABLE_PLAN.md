@@ -1,8 +1,8 @@
 # Runnable reference-app — checkpoint map
 
 The runnable-code pass is complete. This document is now the durable checkpoint
-map: every chapter checkpoint that should exist has a real directory under
-`reference-app/`, every runnable checkpoint is exercised offline by the test
+map: every chapter checkpoint that should exist has a real directory at the
+repo root, every runnable checkpoint is exercised offline by the test
 suite, and the prose is reconciled to those files. Chapter 32 is intentionally
 conceptual and has no checkpoint.
 

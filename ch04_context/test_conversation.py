@@ -41,7 +41,7 @@ def _msg(*, stop_reason: str, blocks: list[TextBlock | ToolUseBlock]) -> Message
     return Message(
         id="msg_test",
         content=list(blocks),
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5",
         role="assistant",
         stop_reason=stop_reason,  # pyright: ignore[reportArgumentType]
         stop_sequence=None,
@@ -273,3 +273,31 @@ def test_tool_spans_nest_under_the_turn_and_carry_the_risk_tier() -> None:
     assert tool_parent is not None
     assert turn_ctx is not None
     assert tool_parent.span_id == turn_ctx.span_id
+
+
+def test_chat_span_carries_the_gen_ai_conventions() -> None:
+    exporter = InMemorySpanExporter()
+    tracer = configure_tracer(exporter)
+    client, _calls = _scripted_client(
+        [_msg(stop_reason="end_turn", blocks=[_text("All set.")])]
+    )
+
+    with agent_turn(tracer, turn=1):
+        run_turn("process INV-1043", [], client=client, tools=TOOLS, tracer=tracer)
+
+    by_name = {s.name: s for s in exporter.get_finished_spans()}
+    assert "gen_ai.chat" in by_name
+
+    chat = by_name["gen_ai.chat"]
+    assert chat.attributes is not None
+    # Current gen_ai semantic conventions: provider.name, NOT the deprecated system.
+    assert chat.attributes["gen_ai.provider.name"] == "anthropic"
+    assert chat.attributes["gen_ai.request.model"] == "claude-sonnet-5"
+    assert chat.attributes["gen_ai.usage.input_tokens"] == 10
+    assert chat.attributes["gen_ai.usage.output_tokens"] == 5
+    # The model-call span sits beside the tool spans, under the turn (Figure 4-2).
+    chat_parent = chat.parent
+    turn_ctx = by_name["agent.turn"].context
+    assert chat_parent is not None
+    assert turn_ctx is not None
+    assert chat_parent.span_id == turn_ctx.span_id

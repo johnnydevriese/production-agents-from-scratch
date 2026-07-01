@@ -72,7 +72,7 @@ def _llm_emitting(decision: RouteDecision) -> FunctionModel:
 
 def test_llm_router_returns_a_route_decision() -> None:
     agent: Agent[None, RouteDecision] = Agent(
-        "anthropic:claude-sonnet-4-6", output_type=RouteDecision
+        "anthropic:claude-sonnet-5", output_type=RouteDecision
     )
     router = LLMRouter(agent=agent)
     scripted = RouteDecision(

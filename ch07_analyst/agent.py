@@ -17,7 +17,7 @@ from .sandbox import RunPythonResult, Sandbox
 from .sandbox import run_python as _run_in_sandbox
 
 analyst_agent = Agent(
-    "anthropic:claude-sonnet-4-6",  # provider:model — same shape for openai:, google:
+    "anthropic:claude-sonnet-5",  # provider:model — same shape for openai:, google:
     deps_type=Sandbox,
     instructions=(
         "You are a finance analyst. Answer questions by writing Python that reads "

@@ -76,7 +76,7 @@ def test_garbage_reason_grades_unusable() -> None:
         reasoning="True but content-free; names no discrepancy and no action.",
         grade=Grade.UNUSABLE,
     )
-    judge = build_reason_judge("anthropic:claude-sonnet-4-6")
+    judge = build_reason_judge("anthropic:claude-sonnet-5")
     with judge.override(model=_emitting_verdict(verdict)):
         out = judge_reason(
             _approval("INV-7741", _BAD_REASON), _match("INV-7741"), judge=judge
@@ -90,7 +90,7 @@ def test_good_reason_grades_good() -> None:
         reasoning="Names the exact discrepancy and the next step; an approver can act.",
         grade=Grade.GOOD,
     )
-    judge = build_reason_judge("anthropic:claude-sonnet-4-6")
+    judge = build_reason_judge("anthropic:claude-sonnet-5")
     with judge.override(model=_emitting_verdict(verdict)):
         out = judge_reason(
             _approval("INV-7742", _GOOD_REASON), _match("INV-7742"), judge=judge
@@ -109,7 +109,7 @@ def test_judge_is_handed_the_matchers_findings() -> None:
     # grades plausibility and hands a 4 to a confident, specific fabrication.
     seen: list[str] = []
     verdict = Verdict(evidence_quote="x", reasoning="y", grade=Grade.UNUSABLE)
-    judge = build_reason_judge("anthropic:claude-sonnet-4-6")
+    judge = build_reason_judge("anthropic:claude-sonnet-5")
     with judge.override(model=_emitting_verdict(verdict, seen=seen)):
         judge_reason(
             _approval("INV-7741", _BAD_REASON), _match("INV-7741"), judge=judge
@@ -166,7 +166,7 @@ def _always_first_pair_judge() -> FunctionModel:
 
 def test_better_answer_wins_in_both_positions() -> None:
     judge: Agent[None, PairVerdict] = build_pairwise_judge(
-        "anthropic:claude-sonnet-4-6"
+        "anthropic:claude-sonnet-5"
     )
     with judge.override(model=_content_aware_pair_judge()):
         assert pairwise_winner(_GOOD_REASON, _BAD_REASON, judge=judge) == "a"
@@ -174,7 +174,7 @@ def test_better_answer_wins_in_both_positions() -> None:
 
 def test_swap_makes_b_win_when_b_is_better() -> None:
     judge: Agent[None, PairVerdict] = build_pairwise_judge(
-        "anthropic:claude-sonnet-4-6"
+        "anthropic:claude-sonnet-5"
     )
     with judge.override(model=_content_aware_pair_judge()):
         assert pairwise_winner(_BAD_REASON, _GOOD_REASON, judge=judge) == "b"
@@ -184,7 +184,7 @@ def test_position_bias_collapses_to_a_tie() -> None:
     # The judge picks "first" both times — it disagrees with itself across orders,
     # so the swap refuses to call it a win. That non-signal is the point.
     judge: Agent[None, PairVerdict] = build_pairwise_judge(
-        "anthropic:claude-sonnet-4-6"
+        "anthropic:claude-sonnet-5"
     )
     with judge.override(model=_always_first_pair_judge()):
         assert pairwise_winner(_GOOD_REASON, _BAD_REASON, judge=judge) == "tie"
@@ -193,7 +193,7 @@ def test_position_bias_collapses_to_a_tie() -> None:
 def test_pairwise_costs_exactly_two_calls() -> None:
     calls: list[int] = []
     judge: Agent[None, PairVerdict] = build_pairwise_judge(
-        "anthropic:claude-sonnet-4-6"
+        "anthropic:claude-sonnet-5"
     )
     with judge.override(model=_content_aware_pair_judge(calls=calls)):
         pairwise_winner(_GOOD_REASON, _BAD_REASON, judge=judge)

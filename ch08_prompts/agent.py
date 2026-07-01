@@ -70,7 +70,7 @@ class Trace(BaseModel):
 
 
 autopilot_agent = Agent(
-    "anthropic:claude-sonnet-4-6",  # base model for a live run; tests override it
+    "anthropic:claude-sonnet-5",  # base model for a live run; tests override it
     deps_type=AutopilotDeps,
 )
 

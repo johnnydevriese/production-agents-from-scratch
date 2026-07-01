@@ -23,7 +23,7 @@ def _msg(*, stop_reason: str, blocks: list[TextBlock | ToolUseBlock]) -> Message
     return Message(
         id="msg_test",
         content=list(blocks),
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5",
         role="assistant",
         stop_reason=stop_reason,  # pyright: ignore[reportArgumentType]
         stop_sequence=None,

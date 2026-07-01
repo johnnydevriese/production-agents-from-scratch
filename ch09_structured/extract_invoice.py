@@ -25,7 +25,7 @@ from anthropic.types import MessageParam, ToolChoiceToolParam, ToolParam, ToolUs
 
 from autopilot.models import Invoice  # the frozen contract, unchanged since Ch 1
 
-MODEL = "claude-sonnet-4-6"  # representative — see Appendix A
+MODEL = "claude-sonnet-5"  # representative — see Appendix A
 
 SYSTEM_PROMPT = (
     "You are an accounts-payable extractor. Read the raw invoice text and return "

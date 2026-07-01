@@ -73,7 +73,7 @@ def _client_emitting(
                     type="tool_use",
                 )
             ],
-            model="claude-sonnet-4-6",
+            model="claude-sonnet-5",
             role="assistant",
             stop_reason="tool_use",
             stop_sequence=None,

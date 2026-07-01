@@ -35,7 +35,7 @@ from autopilot import (
     VendorId,
 )
 
-MODEL = "anthropic:claude-sonnet-4-6"
+MODEL = "anthropic:claude-sonnet-5"
 
 
 @dataclass

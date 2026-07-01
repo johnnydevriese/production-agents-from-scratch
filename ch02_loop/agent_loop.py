@@ -27,7 +27,7 @@ from anthropic.types import (
 from .tool_schemas import TOOLS
 from .tools_impl import DISPATCH
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 
 SYSTEM_PROMPT = (
     "You are an accounts-payable assistant. You have tools to look up invoices "

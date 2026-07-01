@@ -64,7 +64,7 @@ Rubric:
 Quote the exact span you grade before you grade it."""
 
 
-def build_reason_judge(model: Model | KnownModelName) -> Agent[None, Verdict]:
+def build_reason_judge(model: Model | KnownModelName | str) -> Agent[None, Verdict]:
     """Wire the rubric and verdict schema onto a model. Pick a *different* model
     family than the agent under test (self-enhancement bias, Chapter 22)."""
     return Agent(model, output_type=Verdict, system_prompt=JUDGE_SYSTEM)

@@ -23,7 +23,7 @@ The teacher uses the same injected-agent + `FunctionModel` discipline as
 a different label space (the chart of accounts instead of the four specialists).
 
 ```bash
-# from reference-app/
+# from the repo root
 uv run pytest ch16_small_models/ -q
 ```
 

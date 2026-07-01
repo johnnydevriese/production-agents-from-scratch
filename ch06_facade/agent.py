@@ -30,7 +30,7 @@ from autopilot.models import (
 from .facade import RailPaymentFacade
 
 ap_agent = Agent(
-    "anthropic:claude-sonnet-4-6",  # provider:model — same shape for openai:, google:
+    "anthropic:claude-sonnet-5",  # provider:model — same shape for openai:, google:
     deps_type=RailPaymentFacade,
     instructions=(
         "You are an accounts-payable autopilot. Before scheduling a payment, "
